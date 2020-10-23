@@ -14,7 +14,7 @@
 </style>
   <body style="height:100%;">
   <div style="display:flex;">
-  <textarea onkeyup="change(this);">
+  <textarea id="data" onkeyup="change(this);">
 <style>
 
 </style>    
@@ -29,8 +29,12 @@
 
   <script>
     function change(e){
+      localStorage.setItem("data",e.value);
       document.getElementById("html-render").innerHTML=e.value;
     }
+    document.getElementById("data").innerHTML=localStorage.getItem("data")||"";
+    document.getElementById("html-render").innerHTML=localStorage.getItem("data")||"";
+
   </script>
   </body>
 
