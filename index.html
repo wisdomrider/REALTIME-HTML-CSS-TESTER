@@ -1,41 +1,82 @@
 <html>
-  <style>
-  #html-render{
-    padding:4px;
-    margin:2px;
+<style>
+  #html-render {
+    padding: 4px;
+    margin: 2px;
   }
-  textarea{
-    border:0;
-    outline:none;
-    border-right:1px solid;
-    flex:0.7;
-    height:98vh;
+
+  textarea {
+    border: 0;
+    outline: none;
+    border-right: 1px solid;
+    flex: 0.7;
+    height: 92vh;
+  }
+
+  .small-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    background-color: #efefef;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
   }
 </style>
-  <body style="height:100%;">
+
+<body style="height:100%;">
   <div style="display:flex;">
-  <textarea id="data" onkeyup="change(this);">
+    <textarea id="data" onkeyup="change(this);">
 <style>
 
 </style>    
   </textarea>
-  &nbsp;&nbsp;
-  <div id="html-render" style="flex:1;">
+    <input type="hidden" id="url" />
+    &nbsp;&nbsp;
+    <div id="html-render" style="flex:1;">
 
-  </div>
+    </div>
 
+    <div class="bottom-bar">
+      <img onclick="textarea.value=render.innerHTML='';" class="small-icon" src="./eraser.png" />
+      &nbsp;&nbsp;
+      <img onclick="copy('https://html.wisd.xyz?data='+btoa(textarea.value))" class="small-icon" src="./share.png" />
+    </div>
   </div>
 
 
   <script>
-    function change(e){
-      localStorage.setItem("data",e.value);
-      document.getElementById("html-render").innerHTML=e.value;
+    const textarea = document.getElementById("data");
+    const render = document.getElementById("html-render");
+    function change(e) {
+      localStorage.setItem("data", e.value);
+      render.innerHTML = e.value;
     }
-    document.getElementById("data").innerHTML=localStorage.getItem("data")||"";
-    document.getElementById("html-render").innerHTML=localStorage.getItem("data")||"";
+    var defaulttext = window.location.search.split("=")[1];
+    try {
+      defaulttext = atob(defaulttext)
+    }
+    catch (e) {
+      defaulttext = localStorage.getItem("data") || "";
+    }
+    textarea.innerHTML = render.innerHTML = defaulttext;
 
+    function copy(data) {
+      const url = document.getElementById("url");
+      url.value = data;
+      url.setAttribute("type", "text")
+      url.select();
+      url.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      url.setAttribute("type", "hidden")
+      alert("Url Copied to Clipboard");
+    }
   </script>
-  </body>
+</body>
 
 </html>
